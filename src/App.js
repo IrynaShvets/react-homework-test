@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { lazy } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Navigation from './components/Navigation/Navigation';
 
-function App() {
+const CounterView = lazy(() =>
+  import('./views/CounterView' /* webpackChunkName: "counter-view" */)
+);
+const TodosView = lazy(() =>
+  import('./views/TodosView' /* webpackChunkName: "counter-view" */)
+);
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Navigation />}>
+          <Route index element={<CounterView />} />
+          <Route path="/todos" element={<TodosView />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </>
   );
-}
+};
 
 export default App;
